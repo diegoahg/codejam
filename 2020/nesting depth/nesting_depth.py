@@ -13,47 +13,45 @@ testCases = int(input())
 for testCase in range(1, testCases + 1):
     s = input()
     s_p = ""
-    i = 0
+
+    matrix_string = []
+    matrix_int = []
 
     if len(s) == 1:
-        prtss_f = int(s[0])*"("
-        prtss_l = int(s[0])*")"
-        s_p = prtss_f + s[0] + prtss_l
-
+        matrix_string.append(s)
+        matrix_int.append(int(s))
     else:
-        while i<len(s):
-            pos = i
-            i = i + 1
-            if pos == 0:
-                prtss = int(s[pos])*"("
-                s_p = s_p + prtss + s[pos]
-                if s[pos] != s[pos+1]:
-                    prtss = int(s[pos])*")"
-                    s_p = s_p + prtss
+        for i in range(len(s)):
+            if i == 0:
+                matrix_string.append(s[i])
+                matrix_int.append(int(s[i]))
                 continue
 
-            if pos == len(s)-1:
-                if s[pos] != s[pos-1]:
-                    prtss = int(s[pos])*"("
-                    s_p = s_p + prtss
-                prtss = int(s[pos])*")"
-                s_p = s_p + s[pos] + prtss
-                continue
-
-            if s[pos] == s[pos+1]:
-                if s[pos] == s[pos-1]:
-                    s_p = s_p + s[pos]
-                else:
-                    prtss = int(s[pos])*"("
-                    s_p = s_p + prtss + s[pos]
-                continue
+            if s[i] != s[i-1]:
+                matrix_string.append(s[i])
+                matrix_int.append(int(s[i]))
             else:
-                if s[pos] != s[pos-1]:
-                    prtss = int(s[pos])*"("
-                    s_p = s_p + prtss
-                prtss = int(s[pos])*")"
-                s_p = s_p + s[pos] + prtss
-                continue
+                matrix_string[-1] = str(matrix_string[-1]) + s[i]
+
+
+    for i in range(len(matrix_string)):
+        if i == 0:
+            prtss = matrix_int[i]*"("
+            s_p = prtss + matrix_string[i] + s_p
+        
+        else:
+            # Calculate parentheses
+            prtss_value = matrix_int[i] - matrix_int[i-1]
+            if prtss_value > 0:
+                prtss =prtss_value*"("
+            else:
+                prtss = (prtss_value*-1)*")"
+            s_p = s_p + prtss + matrix_string[i]
+
+        if i == len(matrix_string)-1:
+            prtss = matrix_int[i]*")"
+            s_p = s_p + prtss
+
             
 
     print("Case #" + str(testCase) + ": " + s_p)
